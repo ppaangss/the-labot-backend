@@ -179,4 +179,6 @@ docs: 협업 규칙 추가
 
 ## 9. 참고 자료
 
-- [마크다운(markdown) 작성법](https://gist.github.com/ihoneymon/how-to-write-by-markdown.md)
+- [마크다운(markdown) 작성법](https://gist.github.com/ihoneymon/652be052a0727ad59601)
+
+---
