@@ -1,0 +1,26 @@
+#version: '3.8' #이제 표기 안해도 되는듯
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: labot-mysql
+    environment:
+      MYSQL_DATABASE: labot_test_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306" #local환경에서 보기위해 3307 사용
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  spring-app:
+    build: . #현재 디렉토리에서 도커파일 찾아라
+    container_name: labot-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker #application-{docker}.yaml {}프로필 켜라는 뜻
+    depends_on:
+      - mysql #먼저
+
+volumes:
+  mysql-data:

@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: the-labot-backend
+
+  jpa:
+    hibernate:
+      ddl-auto: update #배포 시에는 validate 권장
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
