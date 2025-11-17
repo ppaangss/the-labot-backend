@@ -2,7 +2,7 @@ package com.example.the_labot_backend.attendance;
 
 import com.example.the_labot_backend.attendance.dto.ClockInOutRequestDto;
 import com.example.the_labot_backend.attendance.dto.ObjectionRequestDto;
-import com.example.the_labot_backend.users.User;
+import com.example.the_labot_backend.users.entity.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

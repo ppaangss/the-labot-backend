@@ -3,8 +3,7 @@ package com.example.the_labot_backend.attendance;
 import com.example.the_labot_backend.attendance.dto.ClockInOutRequestDto;
 import com.example.the_labot_backend.attendance.dto.ObjectionRequestDto;
 import com.example.the_labot_backend.sites.Site;
-import com.example.the_labot_backend.users.User;
-import com.example.the_labot_backend.users.UserRepository;  //임시임
+import com.example.the_labot_backend.users.entity.User;
 import com.example.the_labot_backend.workers.Worker;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

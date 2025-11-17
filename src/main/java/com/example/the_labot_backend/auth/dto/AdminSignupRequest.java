@@ -1,16 +1,15 @@
 package com.example.the_labot_backend.auth.dto;
 
-import com.example.the_labot_backend.users.entity.Role;
 import lombok.Getter;
 import lombok.Setter;
 
-// 임시 회원가입 dto
 @Getter
 @Setter
-public class SignupRequest {
+public class AdminSignupRequest {
     private String phoneNumber;
     private String password;
     private String name;
-    private Long siteId;
-    private Role role; // ex) ROLE_WORKER, ROLE_ADMIN
+    private String email; // Admin 정보
+    private String address; // Admin 정보
+    private String secretCode; // 본사 비밀 코드
 }

@@ -1,8 +1,7 @@
 package com.example.the_labot_backend.workers;
 
+import com.example.the_labot_backend.users.entity.User;
 import com.example.the_labot_backend.attendance.Attendance;
-import com.example.the_labot_backend.enums.WorkerStatus;
-import com.example.the_labot_backend.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,13 +36,13 @@ public class Worker {
     private String nationality; // 국적
 
     @Enumerated(EnumType.STRING)
-    private WorkerStatus status; // 근무중, 대기중, 퇴직
+    private WorkerStatus status; // 근무중, 대기중, 퇴근
 
     private String position; // 직종 (배관공, 전기공 등)
     private String siteName; // 상세 근무 현장명
 
     private String profileImage; // 프로필 이미지 (optional)
-    
+
     //worker클래스와 attendance클래스를 연결하기 위해서 , 이 worker의 출근 기록을 리스트로 가진다. 11/16박찬홍
     @OneToMany(mappedBy = "worker")
     @JsonIgnore // (User-Worker처럼 무한 루프 방지)

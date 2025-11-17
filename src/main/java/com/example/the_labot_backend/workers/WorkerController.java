@@ -1,9 +1,12 @@
 package com.example.the_labot_backend.workers;
 
+import com.example.the_labot_backend.workers.dto.WorkerCreateRequest;
 import com.example.the_labot_backend.attendance.dto.AttendanceUpdateRequestDto;
 import com.example.the_labot_backend.workers.dto.WorkerUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -14,6 +17,22 @@ import java.util.Map;
 public class WorkerController {
 
     private final WorkerService workerService;
+
+    // 근로자 등록
+    @PostMapping
+    public ResponseEntity<?> createWorker(
+            @RequestBody WorkerCreateRequest request
+    ) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.parseLong(auth.getName());
+
+        workerService.createWorker(userId, request);
+
+        return ResponseEntity.ok(Map.of(
+                "status", 200,
+                "message", "현장근로자 계정 생성 완료")
+        );
+    }
 
     // 근로자 목록 조회
     @GetMapping

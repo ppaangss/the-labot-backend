@@ -1,4 +1,4 @@
-package com.example.the_labot_backend.enums;
+package com.example.the_labot_backend.workers;
 
 public enum WorkerStatus {
     ACTIVE,     // 근무중
