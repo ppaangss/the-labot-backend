@@ -1,7 +1,7 @@
-package com.example.the_labot_backend.authUser.service;
+package com.example.the_labot_backend.authuser.service;
 
-import com.example.the_labot_backend.authUser.entity.User;
-import com.example.the_labot_backend.authUser.repository.UserRepository;
+import com.example.the_labot_backend.authuser.entity.User;
+import com.example.the_labot_backend.authuser.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -62,5 +62,20 @@ public class UserService {
         }
 
         return sb.toString();
+    }
+
+    @Transactional
+    public void changePassword(Long userId, String oldPassword, String newPassword) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        // 기존 비밀번호가 맞는지 확인
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new RuntimeException("기존 비밀번호가 일치하지 않습니다.");
+        }
+
+        // 새 비밀번호 암호화 후 저장
+        user.setPassword(passwordEncoder.encode(newPassword));
     }
 }
