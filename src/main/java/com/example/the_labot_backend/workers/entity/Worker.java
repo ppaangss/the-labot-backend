@@ -2,6 +2,7 @@ package com.example.the_labot_backend.workers.entity;
 
 import com.example.the_labot_backend.authuser.entity.User;
 import com.example.the_labot_backend.attendance.entity.Attendance;
+import com.example.the_labot_backend.workers.entity.WorkerStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -46,5 +47,6 @@ public class Worker {
     //worker클래스와 attendance클래스를 연결하기 위해서 , 이 worker의 출근 기록을 리스트로 가진다. 11/16박찬홍
     @OneToMany(mappedBy = "worker")
     @JsonIgnore // (User-Worker처럼 무한 루프 방지)
+    @Builder.Default
     private List<Attendance> attendanceRecords = new ArrayList<>();
 }
