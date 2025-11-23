@@ -1,4 +1,4 @@
-name: ci.yml
+name: backend ci
 
 #언제
 on:
