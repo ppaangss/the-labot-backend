@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +36,8 @@ public class FileService {
     //파일저장
     @Transactional
     public void saveFiles(List<MultipartFile> multipartFiles, String targetType, Long targetId) {
-        //파일 비어있으면 안해
+
+        //파일이 없으면 종료
         if (multipartFiles == null || multipartFiles.isEmpty()) {
             return;
         }
@@ -87,7 +91,7 @@ public class FileService {
                         .targetId(targetId)
                         .build();
 
-                //db에 주소 저장
+                // DB에 저장 및 리스트에 추가
                 fileRepository.save(fileEntity);
 
             } catch (IOException e) {
