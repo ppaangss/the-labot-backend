@@ -38,6 +38,56 @@ public class ClovaOcrClient {
         this.objectMapper = objectMapper;
     }
 
+    public ClovaOcrResponseDto callClovaApi(MultipartFile imageFile, String templateName) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            headers.set("X-OCR-SECRET", secretKey);
+
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+            // message
+            Map<String, Object> message = new HashMap<>();
+            message.put("version", "V2");
+            message.put("requestId", UUID.randomUUID().toString());
+            message.put("timestamp", System.currentTimeMillis());
+
+            String format = getFileExtension(imageFile.getOriginalFilename());
+
+            Map<String, String> imageInfo = new HashMap<>();
+            imageInfo.put("format", format);
+            imageInfo.put("name", templateName);
+
+            message.put("images", List.of(imageInfo));
+
+            body.add("message", objectMapper.writeValueAsString(message));
+
+            // file
+            ByteArrayResource fileResource = new ByteArrayResource(imageFile.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return imageFile.getOriginalFilename();
+                }
+            };
+            body.add("file", fileResource);
+
+            HttpEntity<MultiValueMap<String, Object>> requestEntity =
+                    new HttpEntity<>(body, headers);
+
+            ResponseEntity<String> response =
+                    restTemplate.postForEntity(apiUrl, requestEntity, String.class);
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return objectMapper.readValue(response.getBody(), ClovaOcrResponseDto.class);
+            } else {
+                throw new RuntimeException("OCR API 호출 실패: " + response.getStatusCode());
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("OCR 처리 중 예외 발생", e);
+        }
+    }
+
     public String callIdCardApi(MultipartFile imageFile) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -93,6 +143,7 @@ public class ClovaOcrClient {
             throw new RuntimeException("ID Card OCR 처리 중 예외 발생", e);
         }
     }
+
 
 
 
