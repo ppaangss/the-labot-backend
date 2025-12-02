@@ -37,63 +37,6 @@ public class ClovaOcrClient {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
-    /**
-     * Clova OCR API를 호출하는 범용 메서드
-     * @param imageFile 업로드된 이미지 파일
-     * @param templateName 사용할 템플릿 이름 (예: "contract", "id_card")
-     * @return ClovaOcrResponseDto 원본 API 응답
-     */
-    public ClovaOcrResponseDto callClovaApi(MultipartFile imageFile, String templateName) {
-        try {
-            // 1. HTTP 헤더 설정
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-            headers.set("X-OCR-SECRET", secretKey);
-
-            // 2. HTTP 바디(Body) 생성
-            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
-            // 2-1. 'message' JSON 파트 생성
-            Map<String, Object> message = new HashMap<>();
-            message.put("version", "V2");
-            message.put("requestId", UUID.randomUUID().toString());
-            message.put("timestamp", System.currentTimeMillis());
-
-
-            String format = getFileExtension(imageFile.getOriginalFilename());
-
-
-            Map<String, String> imageInfo = new HashMap<>();
-            imageInfo.put("format", format); // ★ 수정된 format 사용
-            imageInfo.put("name", templateName);
-            message.put("images", List.of(imageInfo));
-
-            body.add("message", objectMapper.writeValueAsString(message));
-
-            // 2-2. 'file' 바이너리 파트 생성
-            ByteArrayResource fileResource = new ByteArrayResource(imageFile.getBytes()) {
-                @Override
-                public String getFilename() {
-                    return imageFile.getOriginalFilename();
-                }
-            };
-            body.add("file", fileResource);
-
-            // 3. API 호출
-            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-            ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, requestEntity, String.class);
-
-            // 4. 결과 파싱
-            if (response.getStatusCode() == HttpStatus.OK) {
-                return objectMapper.readValue(response.getBody(), ClovaOcrResponseDto.class);
-            } else {
-                throw new RuntimeException("OCR API 호출 실패: " + response.getStatusCode());
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException("OCR 처리 중 예외 발생", e);
-        }
-    }
 
     public String callIdCardApi(MultipartFile imageFile) {
         try {
@@ -103,7 +46,7 @@ public class ClovaOcrClient {
 
             LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
-            // 1) file
+            // 1) file 파트
             ByteArrayResource fileResource = new ByteArrayResource(imageFile.getBytes()) {
                 @Override
                 public String getFilename() {
@@ -112,11 +55,17 @@ public class ClovaOcrClient {
             };
             body.add("file", fileResource);
 
-            // 2) message (Content-Type: application/json 필수)
+            // 2) message 파트 → ★ images 반드시 포함해야 함!
             Map<String, Object> message = new HashMap<>();
             message.put("version", "V2");
             message.put("requestId", UUID.randomUUID().toString());
             message.put("timestamp", System.currentTimeMillis());
+
+            Map<String, String> imageInfo = new HashMap<>();
+            imageInfo.put("format", getFileExtension(imageFile.getOriginalFilename()));
+            imageInfo.put("name", "id-card");
+
+            message.put("images", List.of(imageInfo));
 
             HttpHeaders jsonHeaders = new HttpHeaders();
             jsonHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -126,6 +75,7 @@ public class ClovaOcrClient {
 
             body.add("message", messagePart);
 
+            // 최종 요청
             HttpEntity<MultiValueMap<String, Object>> requestEntity =
                     new HttpEntity<>(body, headers);
 
@@ -143,6 +93,7 @@ public class ClovaOcrClient {
             throw new RuntimeException("ID Card OCR 처리 중 예외 발생", e);
         }
     }
+
 
 
     /**
