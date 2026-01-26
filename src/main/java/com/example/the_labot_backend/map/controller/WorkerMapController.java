@@ -1,5 +1,6 @@
 package com.example.the_labot_backend.map.controller;
 
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.dto.FileResponse;
 import com.example.the_labot_backend.map.service.MapService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class WorkerMapController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.parseLong(auth.getName());
 
-        List<FileResponse> response = mapService.getMapByUser(userId);
+        List<File> response = mapService.getMapByUser(userId);
 
         return ResponseEntity.ok(Map.of(
                 "status", 200,

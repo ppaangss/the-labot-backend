@@ -2,6 +2,7 @@ package com.example.the_labot_backend.map.service;
 
 import com.example.the_labot_backend.authuser.entity.User;
 import com.example.the_labot_backend.authuser.repository.UserRepository;
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.dto.FileResponse;
 import com.example.the_labot_backend.files.service.FileService;
 import com.example.the_labot_backend.global.exception.NotFoundException;
@@ -38,7 +39,7 @@ public class MapService {
 
     // 본인 현장 지도 조회
     @Transactional(readOnly = true)
-    public List<FileResponse> getMapByUser(Long userId){
+    public List<File> getMapByUser(Long userId){
         // 해당 User 찾기
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다.(getNoticesByUser) userId:" + userId));
@@ -47,14 +48,14 @@ public class MapService {
         Long siteId = user.getSite().getId();
 
         // 파일 추출 (지도)
-        return fileService.getFilesResponseByTarget("SITE_MAP", siteId);
+        return fileService.getFilesByTarget("SITE_MAP", siteId);
     }
 
     // 특정 현장 지도 조회
     @Transactional(readOnly = true)
-    public List<FileResponse> getMapBySite(String targetType, Long siteId){
+    public List<File> getMapBySite(String targetType, Long siteId){
         // 파일 추출 (지도)
-        return fileService.getFilesResponseByTarget(targetType, siteId);
+        return fileService.getFilesByTarget(targetType, siteId);
     }
 
     // 지도 삭제

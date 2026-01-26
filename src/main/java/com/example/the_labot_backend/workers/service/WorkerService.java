@@ -6,9 +6,9 @@ import com.example.the_labot_backend.attendance.repository.AttendanceRepository;
 import com.example.the_labot_backend.authuser.entity.Role;
 import com.example.the_labot_backend.authuser.entity.User;
 import com.example.the_labot_backend.authuser.repository.UserRepository;
+import com.example.the_labot_backend.files.domain.FileStorage;
 import com.example.the_labot_backend.files.dto.FileResponse;
-import com.example.the_labot_backend.files.entity.File;
-import com.example.the_labot_backend.files.repository.FileRepository;
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.service.FileService;
 import com.example.the_labot_backend.global.exception.BadRequestException;
 import com.example.the_labot_backend.global.exception.ForbiddenException;
@@ -47,7 +47,7 @@ public class WorkerService {
     private final PasswordEncoder passwordEncoder;
     private final AttendanceRepository attendanceRepository;// 워크서비스에서 attendace클래스를 변경가능하게끔 함.  11/16박찬홍
     private final FileService fileService;
-    private final FileRepository fileRepository; // [★] 개별 파일 조회를 위해 추가
+    private final FileStorage.FileRepository fileRepository; // [★] 개별 파일 조회를 위해 추가
 
 
     // 근로자 등록
@@ -226,14 +226,14 @@ public class WorkerService {
                 .orElseThrow(() -> new NotFoundException("해당 근로자를 찾을 수 없습니다."));
 
         // 1. 근로계약서 (우리가 저장할 때 targetType="WORKER_CONTRACT"로 하기로 약속)
-        List<FileResponse> contractList = fileService.getFilesResponseByTarget("WORKER_CONTRACT", workerId);
-        FileResponse contractFile = contractList.isEmpty() ? null : contractList.get(0); // 1개만 꺼냄
+        List<File> contractList = fileService.getFilesByTarget("WORKER_CONTRACT", workerId);
+        File contractFile = contractList.isEmpty() ? null : contractList.get(0); // 1개만 꺼냄
 
         // 2. 임금명세서 (targetType="WORKER_PAYSTUB" - 나중에 급여대장 만들 때 이 타입으로 저장하면 됨)
-        List<FileResponse> payStubs = fileService.getFilesResponseByTarget("WORKER_PAYSTUB", workerId);
+        List<File> payStubs = fileService.getFilesByTarget("WORKER_PAYSTUB", workerId);
 
         // 3. 자격증 (targetType="WORKER_LICENSE" - 자격증 올릴 때 이 타입으로 저장)
-        List<FileResponse> licenses = fileService.getFilesResponseByTarget("WORKER_LICENSE", workerId);
+        List<File> licenses = fileService.getFilesByTarget("WORKER_LICENSE", workerId);
 
         // 2. [추가] 출퇴근 기록(List<Attendance>) -> DTO 리스트로 변환
         List<WorkerDetailResponse.AttendanceLogDto> attendanceLogs = worker.getAttendanceRecords().stream()

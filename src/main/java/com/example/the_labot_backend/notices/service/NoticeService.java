@@ -2,7 +2,7 @@ package com.example.the_labot_backend.notices.service;
 
 import com.example.the_labot_backend.authuser.entity.User;
 import com.example.the_labot_backend.authuser.repository.UserRepository;
-import com.example.the_labot_backend.files.entity.File;
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.service.FileService;
 import com.example.the_labot_backend.global.exception.BadRequestException;
 import com.example.the_labot_backend.global.exception.ForbiddenException;

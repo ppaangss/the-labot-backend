@@ -9,7 +9,7 @@ import com.example.the_labot_backend.educations.entity.Education;
 import com.example.the_labot_backend.educations.entity.EducationParticipant;
 import com.example.the_labot_backend.educations.repository.EducationParticipantRepository;
 import com.example.the_labot_backend.educations.repository.EducationRepository;
-import com.example.the_labot_backend.files.entity.File;
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.service.FileService;
 import com.example.the_labot_backend.global.exception.BadRequestException;
 import com.example.the_labot_backend.global.exception.ForbiddenException;

@@ -2,6 +2,7 @@ package com.example.the_labot_backend.reports.service;
 
 import com.example.the_labot_backend.authuser.entity.User;
 import com.example.the_labot_backend.authuser.repository.UserRepository;
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.dto.FileResponse;
 import com.example.the_labot_backend.files.service.FileService;
 import com.example.the_labot_backend.global.exception.ForbiddenException;
@@ -131,7 +132,7 @@ public class ReportService {
         List<ReportMaterial> materialList = reportMaterialRepository.findByReportId(reportId);
 
         // 파일 조회 (targetType = REPORT)
-        List<FileResponse> fileResponses = fileService.getFilesResponseByTarget("REPORT", reportId);
+        List<File> fileResponses = fileService.getFilesByTarget("REPORT", reportId);
 
         // 5) DTO로 변환하여 반환
         return ReportDetailResponse.builder()

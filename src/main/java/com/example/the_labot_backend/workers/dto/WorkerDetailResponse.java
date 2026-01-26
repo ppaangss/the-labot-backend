@@ -1,6 +1,7 @@
 package com.example.the_labot_backend.workers.dto;
 
 import com.example.the_labot_backend.attendance.entity.AttendanceStatus;
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.dto.FileResponse;
 import com.example.the_labot_backend.sites.entity.Site;
 import com.example.the_labot_backend.workers.entity.WorkerStatus;
@@ -45,13 +46,13 @@ public class WorkerDetailResponse {
     // [4] 출퇴근 및 이의제기 기록 리스트
     private List<AttendanceLogDto> attendanceHistory;
     // 1. 근로계약서 (보통 1개만 있으므로 단일 객체, 없으면 null)
-    private FileResponse contractFile;
+    private File contractFile;
 
     // 2. 임금명세서 (여러 달치일 수 있으므로 리스트)
-    private List<FileResponse> payStubFiles;
+    private List<File> payStubFiles;
 
     // 3. 자격증 (여러 개일 수 있으므로 리스트)
-    private List<FileResponse> licenseFiles;
+    private List<File> licenseFiles;
 
     @Getter
     @Builder

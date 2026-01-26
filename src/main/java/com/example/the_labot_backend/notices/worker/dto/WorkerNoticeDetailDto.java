@@ -1,7 +1,7 @@
 package com.example.the_labot_backend.notices.worker.dto;
 
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.dto.FileResponse;
-import com.example.the_labot_backend.files.entity.File;
 import com.example.the_labot_backend.notices.entity.Notice;
 import com.example.the_labot_backend.notices.entity.NoticeCategory;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -21,9 +20,9 @@ public class WorkerNoticeDetailDto {
     private LocalDate createdDate;
     private String content;
     private String writerName;
-    private List<FileResponse> files;
+    private List<File> files;
 
-    public static WorkerNoticeDetailDto of(Notice notice, List<FileResponse> files) {
+    public static WorkerNoticeDetailDto of(Notice notice, List<File> files) {
         return WorkerNoticeDetailDto.builder()
                 .id(notice.getId())
                 .title(notice.getTitle())

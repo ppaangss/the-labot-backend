@@ -2,27 +2,10 @@ package com.example.the_labot_backend.files.controller;
 
 import com.example.the_labot_backend.files.service.FileService;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.the_labot_backend.authuser.entity.User;
-import com.example.the_labot_backend.authuser.repository.UserRepository;
-import com.example.the_labot_backend.files.entity.File;
-import com.example.the_labot_backend.files.repository.FileRepository;
-import com.example.the_labot_backend.workers.entity.Worker;
-import com.example.the_labot_backend.workers.repository.WorkerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.List;
 import java.util.Map;
   
@@ -42,8 +25,8 @@ public class FileController {
             @RequestParam("targetId") Long targetId
     ) {
 
-        fileService.deleteFilesByTarget(targetType,targetId);
-        fileService.saveFiles(files, targetType, targetId);
+//        fileService.deleteFilesByTarget(targetType,targetId);
+//        fileService.saveFiles(files, targetType, targetId);
 
         return ResponseEntity.ok(Map.of(
                 "status", 200,

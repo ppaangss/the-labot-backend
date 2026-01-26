@@ -1,6 +1,6 @@
 package com.example.the_labot_backend.map.controller;
 
-import com.example.the_labot_backend.files.dto.FileResponse;
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.service.FileService;
 import com.example.the_labot_backend.map.service.MapService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class AdminMapController {
     @GetMapping("/{siteId}/map")
     public ResponseEntity<?> getSiteMap(@PathVariable Long siteId) {
 
-        List<FileResponse> response = mapService.getMapBySite("SITE_MAP", siteId);
+        List<File> response = mapService.getMapBySite("SITE_MAP", siteId);
 
         return ResponseEntity.ok(Map.of(
                 "status", 200,

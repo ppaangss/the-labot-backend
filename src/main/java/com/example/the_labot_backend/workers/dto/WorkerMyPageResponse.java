@@ -1,6 +1,7 @@
 package com.example.the_labot_backend.workers.dto;
 
 import com.example.the_labot_backend.authuser.entity.User;
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.dto.FileResponse;
 import com.example.the_labot_backend.workers.entity.Worker;
 import com.example.the_labot_backend.workers.entity.embeddable.WorkerBankAccount;
@@ -32,14 +33,14 @@ public class WorkerMyPageResponse {
     private String accountHolder;
 
     // --- 3. [★ 수정됨] 파일 정보 (ID만 주는게 아니라 URL 포함된 객체 전달) ---
-    private FileResponse contractFile;        // 근로계약서 (보통 1개)
-    private List<FileResponse> payrollFiles;  // 급여명세서 (여러 달치, 리스트)
-    private List<FileResponse> certificateFiles; // 자격증 (여러 개, 리스트)
+    private File contractFile;        // 근로계약서 (보통 1개)
+    private List<File> payrollFiles;  // 급여명세서 (여러 달치, 리스트)
+    private List<File> certificateFiles; // 자격증 (여러 개, 리스트)
     // --- 엔티티 -> DTO 변환 메서드 ---
     public static WorkerMyPageResponse from(User user, Worker worker,
-                                            FileResponse contractFile,
-                                            List<FileResponse> payrollFiles,
-                                            List<FileResponse> certificateFiles) {
+                                            File contractFile,
+                                            List<File> payrollFiles,
+                                            List<File> certificateFiles) {
 
         // 계좌 정보 null 체크 (Worker가 계좌를 등록하지 않았을 수도 있음)
         WorkerBankAccount bank = worker.getBankAccount();

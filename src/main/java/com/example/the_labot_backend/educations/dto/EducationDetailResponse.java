@@ -4,7 +4,7 @@ import com.example.the_labot_backend.educations.entity.Education;
 import com.example.the_labot_backend.educations.entity.EducationParticipant;
 import com.example.the_labot_backend.educations.entity.EducationStatus;
 import com.example.the_labot_backend.educations.entity.EducationType;
-import com.example.the_labot_backend.files.entity.File;
+import com.example.the_labot_backend.files.domain.File;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

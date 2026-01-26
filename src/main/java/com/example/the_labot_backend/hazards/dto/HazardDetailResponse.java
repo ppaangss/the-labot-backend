@@ -1,6 +1,6 @@
 package com.example.the_labot_backend.hazards.dto;
 
-import com.example.the_labot_backend.files.entity.File;
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.hazards.entity.Hazard;
 import lombok.Getter;
 

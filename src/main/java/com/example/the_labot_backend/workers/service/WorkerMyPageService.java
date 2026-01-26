@@ -2,32 +2,25 @@ package com.example.the_labot_backend.workers.service;
 
 import com.example.the_labot_backend.authuser.entity.User;
 import com.example.the_labot_backend.authuser.repository.UserRepository;
+import com.example.the_labot_backend.files.domain.FileStorage;
 import com.example.the_labot_backend.files.dto.FileResponse;
-import com.example.the_labot_backend.files.entity.File;
-import com.example.the_labot_backend.files.repository.FileRepository;
+import com.example.the_labot_backend.files.domain.File;
 import com.example.the_labot_backend.files.service.FileService;
 import com.example.the_labot_backend.workers.dto.WorkerMyPageResponse;
 import com.example.the_labot_backend.workers.dto.WorkerMyPageUpdateRequest;
 import com.example.the_labot_backend.workers.entity.Worker;
 import com.example.the_labot_backend.workers.entity.embeddable.WorkerBankAccount;
-import org.springframework.core.io.Resource;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class WorkerMyPageService {
     private final UserRepository userRepository;
-    private final FileRepository fileRepository; // [★] 개별 조회를 위해 추가
+    private final FileStorage.FileRepository fileRepository; // [★] 개별 조회를 위해 추가
 
     private final FileService fileService; // [★] 우리가 만든 파일 서비스 사용
     // 기존 로컬 저장 경로 유지
@@ -47,14 +40,14 @@ public class WorkerMyPageService {
 
         // [★ 수정됨] FileService를 통해 S3 URL이 포함된 DTO 리스트 조회
         // 1) 근로계약서 (WORKER_CONTRACT) - 1개만 가져옴
-        List<FileResponse> contracts = fileService.getFilesResponseByTarget("WORKER_CONTRACT", worker.getId());
-        FileResponse contractFile = contracts.isEmpty() ? null : contracts.get(0);
+        List<File> contracts = fileService.getFilesByTarget("WORKER_CONTRACT", worker.getId());
+        File contractFile = contracts.isEmpty() ? null : contracts.get(0);
 
         // 2) 급여명세서 (WORKER_PAYROLL) - 전체 리스트
-        List<FileResponse> payrolls = fileService.getFilesResponseByTarget("WORKER_PAYROLL", worker.getId());
+        List<File> payrolls = fileService.getFilesByTarget("WORKER_PAYROLL", worker.getId());
 
         // 3) 자격증 (WORKER_LICENSE) - 전체 리스트
-        List<FileResponse> licenses = fileService.getFilesResponseByTarget("WORKER_LICENSE", worker.getId());
+        List<File> licenses = fileService.getFilesByTarget("WORKER_LICENSE", worker.getId());
 
         // DTO 변환 후 반환
         return WorkerMyPageResponse.from(user, worker, contractFile, payrolls, licenses);
